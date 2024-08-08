@@ -1,151 +1,45 @@
 import streamlit as st
 import pandas as pd
-import math
-from pathlib import Path
+import matplotlib.pyplot as plt
+import altair as alt
 
-# Set the title and favicon that appear in the Browser's tab bar.
-st.set_page_config(
-    page_title='GDP dashboard',
-    page_icon=':earth_americas:', # This is an emoji shortcode. Could be a URL too.
-)
+df_cobertura = pd.read_csv('df_final_cobertura_Q2_24.csv')
 
-# -----------------------------------------------------------------------------
-# Declare some useful functions.
+st.markdown("## Rodadas Crunchbase")
 
-@st.cache_data
-def get_gdp_data():
-    """Grab GDP data from a CSV file.
+unique_funding_type = df_cobertura["Funding Type"].unique()
+unique_funding_type = sorted(unique_funding_type)
+unique_status = df_cobertura["Classification"].unique()
 
-    This uses caching to avoid having to read the file every time. If we were
-    reading from an HTTP endpoint instead of a file, it's a good idea to set
-    a maximum age to the cache with the TTL argument: @st.cache_data(ttl='1d')
-    """
+#col1, col2 = st.columns(2)
 
-    # Instead of a CSV on disk, you could read from an HTTP endpoint here too.
-    DATA_FILENAME = Path(__file__).parent/'data/gdp_data.csv'
-    raw_gdp_df = pd.read_csv(DATA_FILENAME)
+st.subheader('Funding Type')
+fundingtype_filter = st.multiselect('',unique_funding_type, unique_funding_type) 
 
-    MIN_YEAR = 1960
-    MAX_YEAR = 2022
+#col2.subheader('Status')
+#status = col2.multiselect('',unique_status, unique_status) 
 
-    # The data above has columns like:
-    # - Country Name
-    # - Country Code
-    # - [Stuff I don't care about]
-    # - GDP for 1960
-    # - GDP for 1961
-    # - GDP for 1962
-    # - ...
-    # - GDP for 2022
-    #
-    # ...but I want this instead:
-    # - Country Name
-    # - Country Code
-    # - Year
-    # - GDP
-    #
-    # So let's pivot all those year-columns into two: Year and GDP
-    gdp_df = raw_gdp_df.melt(
-        ['Country Code'],
-        [str(x) for x in range(MIN_YEAR, MAX_YEAR + 1)],
-        'Year',
-        'GDP',
-    )
+data_range = st.slider('Select Days Range', 0, 365, (0, 365))
 
-    # Convert years from string to integers
-    gdp_df['Year'] = pd.to_numeric(gdp_df['Year'])
+df = df_cobertura[df_cobertura['Time Since Announced'].between(data_range[0], data_range[-1])]
+df['Time Since Announced'] = df['Time Since Announced'].astype(int)
+df = df[df['Funding Type'].isin(fundingtype_filter)]
 
-    return gdp_df
-
-gdp_df = get_gdp_data()
-
-# -----------------------------------------------------------------------------
-# Draw the actual page
-
-# Set the title that appears at the top of the page.
-'''
-# :earth_americas: GDP dashboard
-
-Browse GDP data from the [World Bank Open Data](https://data.worldbank.org/) website. As you'll
-notice, the data only goes to 2022 right now, and datapoints for certain years are often missing.
-But it's otherwise a great (and did I mention _free_?) source of data.
-'''
-
-# Add some spacing
-''
-''
-
-min_value = gdp_df['Year'].min()
-max_value = gdp_df['Year'].max()
-
-from_year, to_year = st.slider(
-    'Which years are you interested in?',
-    min_value=min_value,
-    max_value=max_value,
-    value=[min_value, max_value])
-
-countries = gdp_df['Country Code'].unique()
-
-if not len(countries):
-    st.warning("Select at least one country")
-
-selected_countries = st.multiselect(
-    'Which countries would you like to view?',
-    countries,
-    ['DEU', 'FRA', 'GBR', 'BRA', 'MEX', 'JPN'])
-
-''
-''
-''
-
-# Filter the data
-filtered_gdp_df = gdp_df[
-    (gdp_df['Country Code'].isin(selected_countries))
-    & (gdp_df['Year'] <= to_year)
-    & (from_year <= gdp_df['Year'])
-]
-
-st.header('GDP over time', divider='gray')
-
-''
-
-st.line_chart(
-    filtered_gdp_df,
-    x='Year',
-    y='GDP',
-    color='Country Code',
-)
-
-''
-''
+#df = df[df['Classification'].isin(status)]
 
 
-first_year = gdp_df[gdp_df['Year'] == from_year]
-last_year = gdp_df[gdp_df['Year'] == to_year]
+df = df[['Organization Name', 'Classification', 'Money Raised (in USD)', 'Funding Type', 'Total Funding Amount (in USD)', 'Organization Location', 'Announced Date']]
 
-st.header(f'GDP in {to_year}', divider='gray')
+st.dataframe(df)
 
-''
+# col.markdown('##### Metrics')
+col1, col2 = st.columns(2)
 
-cols = st.columns(4)
+total_startups = df_cobertura['Organization Name'].nunique()
+col1.metric("Total Startups", total_startups )
 
-for i, country in enumerate(selected_countries):
-    col = cols[i % len(cols)]
+nao_acesso_startups = df[df['Classification'] == 'Nao tivemos acesso']['Organization Name'].nunique()
+percent_acesso = (100 - (nao_acesso_startups / total_startups) * 100)
 
-    with col:
-        first_gdp = first_year[gdp_df['Country Code'] == country]['GDP'].iat[0] / 1000000000
-        last_gdp = last_year[gdp_df['Country Code'] == country]['GDP'].iat[0] / 1000000000
+col2.metric("Taxa Cobertura", f"{percent_acesso:.2f}%")
 
-        if math.isnan(first_gdp):
-            growth = 'n/a'
-            delta_color = 'off'
-        else:
-            growth = f'{last_gdp / first_gdp:,.2f}x'
-            delta_color = 'normal'
-
-        st.metric(
-            label=f'{country} GDP',
-            value=f'{last_gdp:,.0f}B',
-            delta=growth,
-            delta_color=delta_color
-        )

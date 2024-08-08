@@ -1,2 +1,6 @@
 streamlit
 pandas
+altair
+matplotlib
+plotly
+matplotlib-venn
