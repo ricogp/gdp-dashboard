@@ -1,0 +1,44 @@
+#import streamlit as st
+# import pandas as pd
+# import matplotlib.pyplot as plt
+# import altair as alt
+
+# df_cobertura = pd.read_csv('df_final_cobertura_Q2_24.csv')
+
+# st.markdown("## Rodadas Crunchbase")
+
+# unique_funding_type = df_cobertura["Funding Type"].unique()
+# unique_funding_type = sorted(unique_funding_type)
+# unique_status = df_cobertura["Classification"].unique()
+
+# #col1, col2 = st.columns(2)
+
+# st.subheader('Funding Type')
+# fundingtype_filter = st.multiselect('',unique_funding_type, unique_funding_type) 
+
+# #col2.subheader('Status')
+# #status = col2.multiselect('',unique_status, unique_status) 
+
+# data_range = st.slider('Select Days Range', 0, 365, (0, 365))
+
+# df = df_cobertura[df_cobertura['Time Since Announced'].between(data_range[0], data_range[-1])]
+# df['Time Since Announced'] = df['Time Since Announced'].astype(int)
+# df = df[df['Funding Type'].isin(fundingtype_filter)]
+
+# #df = df[df['Classification'].isin(status)]
+
+
+# df = df[['Organization Name', 'Classification', 'Money Raised (in USD)', 'Funding Type', 'Total Funding Amount (in USD)', 'Organization Location', 'Announced Date']]
+
+# st.dataframe(df)
+
+# # col.markdown('##### Metrics')
+# col1, col2 = st.columns(2)
+
+# total_startups = df_cobertura['Organization Name'].nunique()
+# col1.metric("Total Startups", total_startups )
+
+# nao_acesso_startups = df[df['Classification'] == 'Nao tivemos acesso']['Organization Name'].nunique()
+# percent_acesso = (100 - (nao_acesso_startups / total_startups) * 100)
+
+# col2.metric("Taxa Cobertura", f"{percent_acesso:.2f}%")

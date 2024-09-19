@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import altair as alt
 import plotly.express as px
+import seaborn as sns
 
 st.markdown("## Detalhamento Sourcing Startups Series A")
 
@@ -16,9 +17,9 @@ df = df_merged.merge(df_planilha_relevantes[['Organization Name', 'Analise desca
 
 df = df.dropna(subset=['Analise descarte'])
 
-df_nao_acesso = df[~df['Analise descarte'].isin(['Não tivemos acesso', 'Não se aplica'])]
+df_acesso = df[~df['Analise descarte'].isin(['Não tivemos acesso', 'Não se aplica'])]
 
-df_grouped = df_nao_acesso.groupby('Organization Name')[['sourcename', 'detailed_source', 'Analise descarte', 'Total Funding Amount (in USD)']].first().reset_index()
+df_grouped = df_acesso.groupby('Organization Name')[['sourcename', 'detailed_source', 'Analise descarte', 'Total Funding Amount (in USD)']].first().reset_index()
 
 value = df_grouped['sourcename'].value_counts()
 
@@ -37,3 +38,4 @@ df_detail_source = df_detail_source[['Organization Name', 'detailed_source', 'An
 df_detail_source = df_detail_source.sort_values('detailed_source')
 
 st.dataframe(df_detail_source)
+
