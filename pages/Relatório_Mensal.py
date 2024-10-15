@@ -80,7 +80,7 @@ col8.dataframe(n_investors, height=200, width=1200)
 col9.dataframe(n_funding_type, height=200, width=1200)
 
 # Supondo que st.session_state.df seja o DataFrame que você deseja salvar
-csv_path = '/workspaces/gdp-dashboard/df_final_cobertura_historico_updated.csv'
+csv_path = '/workspaces/gdp-dashboard/df_final_cobertura_historico.csv'
 
 # Função para salvar o CSV
 def save_csv():
