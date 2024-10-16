@@ -6,15 +6,17 @@ import numpy as np
 # Topics section
 st.subheader("Classification")
 
+st.write("1. Seleção Adversa:")
+st.write("   Não tivemos acesso")
 
 st.write("2. Tomada de Decisão/ Análise:")
-st.write("   2.1 Falso Negativo (aqui podemos incorporar o Processo Lento)")
-st.write("   2.2 Verdadeiro Negativo")
-st.write("   2.3 Indefinido (ainda não se provou ser um Falso Negativo ou Verdadeiro Negativo)")
-st.write("   2.4 Portfolio")
-st.write("   2.5 Dúvida (quando não ficou clara a classificação olhando o Domenique)")
-st.write("   2.6 Lost to another players (quando avaliamos uma startup, gostamos dela, mas ela captou com outro)")
-st.write("   2.7 Em análise (estamos analisando a startup e ela ainda não passou do nosso estágio, mas recebeu alguma rodada no Crunchbase)")
+st.write("   Falso Negativo (aqui podemos incorporar o Processo Lento)")
+st.write("   Verdadeiro Negativo")
+st.write("   Indefinido (ainda não se provou ser um Falso Negativo ou Verdadeiro Negativo)")
+st.write("   Portfolio")
+st.write("   Dúvida (quando não ficou clara a classificação olhando o Domenique)")
+st.write("   Lost to another players (quando avaliamos uma startup, gostamos dela, mas ela captou com outro)")
+st.write("   Em análise (estamos analisando a startup e ela ainda não passou do nosso estágio, mas recebeu alguma rodada no Crunchbase)")
 
 # Carregar o DataFrame do arquivo CSV
 csv_file_path = 'df_final_cobertura_historico.csv'  # Caminho do seu arquivo CSV
