@@ -7,7 +7,7 @@ import numpy as np
 st.subheader("Classification")
 
 # List of topics
-st.write("""
+st.markdown("""
 - Seleção Adversa: 
         Nao tivemos acesso
 - Tomada de Decisão/ Análise: 
