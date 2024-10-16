@@ -2,6 +2,25 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 
+
+# Topics section
+st.subheader("Classification")
+
+# List of topics
+st.write("""
+- Seleção Adversa: 
+        Nao tivemos acesso
+- Tomada de Decisão/ Análise: 
+        Falso Negativo (aqui podemos incorporar o Processo Lento)
+        Verdadeiro Negativo
+        Indefinido (ainda não se provou ser um Falso Negativo ou Verdadeiro Negativo)
+        Portfolio
+        Dúvida (quando não ficou clara a classificação olhando o Domenique)
+        Lost to another players (quando avalíamos uma startups, gostamos dela, mas ela capta com outro)
+        Em análise (estamos analisando a startup e ela ainda não passou do nosso estágio, mas recebeu alguma rodada no crunchbase)
+    
+""")
+
 # Carregar o DataFrame do arquivo CSV
 csv_file_path = 'df_final_cobertura_historico.csv'  # Caminho do seu arquivo CSV
 
@@ -50,10 +69,14 @@ with st.expander("Histórico de Rodada das Startups"):
 
 col6, col7= st.columns(2)
 
+csv_path = '/workspaces/gdp-dashboard/df_final_cobertura_historico.csv'
+
 # Adiciona um botão para salvar as alterações
 if col6.button("Salvar Alterações"):
+    st.write("Salvando alterações...")
+    
     # Atualiza o dataframe no session_state
-    st.session_state.df.update(edited_df2)
+    st.session_state.df.update(edited_df2)  # Use combine_first se necessário
 
     # Salva o DataFrame editado de volta ao CSV
     st.session_state.df.to_csv(csv_file_path, index=False)  # Salva sem o índice
@@ -83,13 +106,43 @@ col9.dataframe(n_funding_type, height=200, width=1200)
 csv_path = '/workspaces/gdp-dashboard/df_final_cobertura_historico.csv'
 
 # Função para salvar o CSV
-def save_csv():
-    st.session_state.df.to_csv(csv_path, index=False)
-    st.success(f"Arquivo salvo em: {csv_path}")
+#def save_csv():
+    #st.session_state.df.to_csv(csv_path, index=False)
+    #st.success(f"Arquivo salvo em: {csv_path}")
 
 # Criando o botão para salvar o CSV
-if col7.button('Salvar CSV'):
-    save_csv()
+#if col7.button('Salvar CSV'):
+    #save_csv()
+
+
+# Definindo o caminho do arquivo CSV
+#csv_path = '/workspaces/gdp-dashboard/df_final_cobertura_historico.csv'
+
+# Verifique se o DataFrame já está carregado no session_state
+#if 'df' not in st.session_state:
+    # Carrega o CSV, se ele existir
+#    if os.path.exists(csv_path):
+#        st.session_state.df = pd.read_csv(csv_path)
+ #       st.success("CSV carregado com sucesso!")
+  #  else:
+   #     # Inicializa um DataFrame vazio se o arquivo não existir
+    #    st.session_state.df = pd.DataFrame()
+     #   st.warning("Arquivo CSV não encontrado, criando um DataFrame vazio.")
+
+# Função para salvar o DataFrame no CSV
+#def save_csv():
+#    st.session_state.df.to_csv(csv_path, index=False)
+#    st.success(f"Arquivo atualizado e salvo em: {csv_path}")
+
+# Exibe o DataFrame para edição
+#edited_df = st.data_editor(st.session_state.df, key='data_editor3')
+
+# Botão para salvar as mudanças no CSV
+#if st.button('Salvar CSV'):
+#    st.session_state.df = edited_df  # Atualiza o DataFrame no session_state
+#    save_csv()  # Salva o CSV com as alterações
+
+
 
 docs = 'https://docs.google.com/document/d/1H6_vHu8biml93LA4h3mniRoA_PgYHOEYTysyMbdmg9o/edit'
 st.link_button("Docs - Análises", docs)
