@@ -8,16 +8,16 @@ st.subheader("Classification")
 
 # List of topics
 st.markdown("""
-- Seleção Adversa: 
+1. Seleção Adversa: 
         Nao tivemos acesso
-- Tomada de Decisão/ Análise: 
-        Falso Negativo (aqui podemos incorporar o Processo Lento)
-        Verdadeiro Negativo
-        Indefinido (ainda não se provou ser um Falso Negativo ou Verdadeiro Negativo)
-        Portfolio
-        Dúvida (quando não ficou clara a classificação olhando o Domenique)
-        Lost to another players (quando avalíamos uma startups, gostamos dela, mas ela capta com outro)
-        Em análise (estamos analisando a startup e ela ainda não passou do nosso estágio, mas recebeu alguma rodada no crunchbase)
+2. Tomada de Decisão/ Análise: 
+        2.1 Falso Negativo (aqui podemos incorporar o Processo Lento)
+        2.2 Verdadeiro Negativo
+        2.3 Indefinido (ainda não se provou ser um Falso Negativo ou Verdadeiro Negativo)
+        2.4 Portfolio
+        2.5 Dúvida (quando não ficou clara a classificação olhando o Domenique)
+        2.6 Lost to another players (quando avalíamos uma startups, gostamos dela, mas ela capta com outro)
+        2.7 Em análise (estamos analisando a startup e ela ainda não passou do nosso estágio, mas recebeu alguma rodada no crunchbase)
     
 """)
 
